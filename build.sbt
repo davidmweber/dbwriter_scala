@@ -7,6 +7,7 @@ val zhttpVersion = "2.0.0-RC3"
 val zioVersion = "2.0.0-RC2"
 val tapirVersion = "0.20.0-M10"
 val quillVersion =  "3.17.0.Beta3.0-RC1" // Actually protoquill!
+val postgresJdbc = "42.3.2"
 
 lazy val root = (project in file("."))
   .settings(
@@ -17,7 +18,7 @@ lazy val root = (project in file("."))
       "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-zio-http-server" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % tapirVersion,
-//      "org.postgresql" % "postgresql" % "42.3.1",
+      "org.postgresql" % "postgresql" % postgresJdbc,
       "dev.zio" %% "zio-test" % zioVersion % Test
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
