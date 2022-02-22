@@ -5,8 +5,8 @@ ThisBuild / organizationName := "example"
 
 val zhttpVersion = "2.0.0-RC3"
 val zioVersion = "2.0.0-RC2"
-val tapirVersion = "0.20.0-M9"
-val quillVersion =  "3.16.3.Beta2.3" // Actually protoquill!
+val tapirVersion = "0.20.0-M10"
+val quillVersion =  "3.17.0.Beta3.0-RC1" // Actually protoquill!
 
 lazy val root = (project in file("."))
   .settings(
@@ -16,6 +16,7 @@ lazy val root = (project in file("."))
       "io.getquill" %% "quill-jdbc-zio" % quillVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-zio-http-server" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % tapirVersion,
 //      "org.postgresql" % "postgresql" % "42.3.1",
       "dev.zio" %% "zio-test" % zioVersion % Test
     ),

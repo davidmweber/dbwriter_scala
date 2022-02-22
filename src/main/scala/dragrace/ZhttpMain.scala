@@ -9,7 +9,7 @@ import java.util.Date
 import javax.sql.DataSource
 
 
-object Main extends ZIOAppDefault:
+object ZhttpMain extends ZIOAppDefault:
 
   val versionLayer: ULayer[String] = ZLayer.succeed("2.3.1")
 
