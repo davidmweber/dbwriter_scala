@@ -1,6 +1,6 @@
 package dragrace
 
-import zhttp.http.*
+import io.getquill.*
 import zhttp.service.Server
 import zio.*
 
@@ -8,25 +8,18 @@ import java.sql.SQLException
 import java.util.Date
 import javax.sql.DataSource
 
+/** These are the queries that will be run against the database.
+  */
+/*
+ * This is the database schema. Schema generation from the database is possible
+ * in quill but it is not very mature.
+ */
 
 object ZhttpMain extends ZIOAppDefault:
+  import io.getquill.context.ZioJdbc.DataSourceLayer
 
-  val versionLayer: ULayer[String] = ZLayer.succeed("2.3.1")
-
-  val versionEffect: ZIO[String, Nothing, Response] = for
-    v <- ZIO.service[String]
-    r <- UIO(Response.text(s"Version: $v"))
-  yield r
-
-  def helloEffect(name: String): UIO[Response] =
-    ZIO.succeed(Response.text(s"Hello World $name"))
-
-  private val app = Http.collectZIO[Request] {
-    case Method.GET -> !! / "hello" =>
-      ZIO.succeed(Response.text("Hello World!"))
-    case Method.GET -> !! / "hello" / name => helloEffect(name)
-    case Method.GET -> !! / "version"      => versionEffect
-  }
-
-  override def run: URIO[Any, ExitCode] =
-    Server.start(8090, app).provideLayer(versionLayer).exitCode
+  override def run =
+    Server
+      .start(8090, Api.app)
+      .provide(QuillContext.dataSourceLayer, DataService.live)
+      .exitCode
