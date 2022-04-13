@@ -3,23 +3,33 @@ package dragrace
 import io.getquill.*
 import zhttp.service.Server
 import zio.*
+import zio.Console.printLine
 
 import java.sql.SQLException
 import java.util.Date
 import javax.sql.DataSource
 
-/** These are the queries that will be run against the database.
-  */
-/*
- * This is the database schema. Schema generation from the database is possible
- * in quill but it is not very mature.
- */
+object CreateSampleData:
+  import QuillContext.*
 
+  val now = java.time.LocalDateTime.now()
+  val samps = (0 until 10)
+    .map(i => Samples(i, "egt", now.plusSeconds(i), Some(i.toFloat), Some(i.toFloat)))
+
+  val dbSetup = transaction(for {
+    _ <- run(Queries.deleteAllSamples)
+    _ <- run(Queries.insertSamples(samps))
+  } yield ())
+
+end CreateSampleData
+
+// The entry point for this app
 object ZhttpMain extends ZIOAppDefault:
-  import io.getquill.context.ZioJdbc.DataSourceLayer
 
   override def run =
-    Server
-      .start(8090, Api.app)
+    (for {
+      _ <- CreateSampleData.dbSetup
+      _ <- Server.start(8090, Api.app)
+    } yield ())
       .provide(QuillContext.dataSourceLayer, DataService.live)
       .exitCode
