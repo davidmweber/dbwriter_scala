@@ -3,10 +3,10 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "co.za.monadic"
 ThisBuild / organizationName := "example"
 
-val zhttpVersion = "2.0.0-RC4"
-val zioVersion = "2.0.0-RC2"
-val zioJsonVersion = "0.3.0-RC3"
-val quillVersion = "3.17.0.Beta3.0-RC2" // Actually protoquill!
+val zhttpVersion = "2.0.0-RC7"
+val zioVersion = "2.0.0-RC6"
+val zioJsonVersion = "0.3.0-RC8"
+val quillVersion = "3.17.0.Beta3.0-RC4" // Actually protoquill!
 val postgresJdbc = "42.3.2"
 
 lazy val root = (project in file("."))

@@ -11,7 +11,7 @@ scale at [Dream 11](https://www.dream11.com/) and others so it can be taken fair
 seriously.
 
 The build requires only that [sbt](https://www.scala-sbt.org/) be installed and that a working
-instance of PosggreSQL be available. First, set up the database:
+instance of PostgreSQL be available. First, set up the database:
 
 ```sh
 createdb dbwriter_scala
