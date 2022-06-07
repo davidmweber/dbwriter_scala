@@ -1,15 +1,21 @@
 package dragrace
 
 import zhttp.service.Server
-import zio.*
+import zio._
+import io.getquill.context.ZioJdbc.DataSourceLayer
 
-// The entry point for this app
+// // The entry point for this app
 object ZhttpMain extends ZIOAppDefault:
-
   override def run =
     (for {
+      api <- ZIO.service[Api]
+      _ <- Console.printLine("Initialising DB ****************************************")
       _ <- SampleData.dbSetup
-      _ <- Server.start(8090, Api.app)
+      _ <- Console.printLine("Starting server")
+      _ <- Server.start(8090, api.app)
+      _ <- Console.printLine("Done")
     } yield ())
-      .provide(QuillContext.dataSourceLayer, DataService.live)
+      .provide(Api.live, DataService.live, DataSourceLayer.fromPrefix("database").orDie)
       .exitCode
+
+// end ZhttpMain

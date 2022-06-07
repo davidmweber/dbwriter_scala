@@ -1,11 +1,8 @@
 package dragrace
 
 import io.getquill.{PostgresZioJdbcContext, Literal}
-import io.getquill.context.ZioJdbc.DataSourceLayer
-import zio.ULayer
-import javax.sql.DataSource
 
-// This just reads the config file in resources/reference.conf and looks under
-// the "database" key for the connection details.
-object QuillContext extends PostgresZioJdbcContext(Literal):
-  val dataSourceLayer = DataSourceLayer.fromPrefix("database").orDie
+// Reify a context we can use to access the database. This can be any
+// database type supported by Quill but it must be known at compile time
+// for the data service layer to compile. You cannot layer a context
+object QuillContext extends PostgresZioJdbcContext(Literal)
