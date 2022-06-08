@@ -41,5 +41,7 @@ case class ApiLive(ds: DataService) extends Api:
     case Method.GET -> !! / "sample" / int(id) => se(id) //sampleEffect(id.toInt)
   }
 
+// TODO: This really does not need to be a layer. Separate the routing out from  the API functions
+// and try to leverage zhttp better for the codecs and stuff.
 object Api:
   val live = ZLayer.fromFunction(ds => ApiLive(ds))
