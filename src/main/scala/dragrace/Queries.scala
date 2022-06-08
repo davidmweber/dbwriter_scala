@@ -5,7 +5,7 @@ import io.getquill.*
 import QuillContext.*
 
 object Queries:
-  // Return all the samples in the database. Noe that the quote is a macro that will
+  // Return all the samples in the database. Note that the quote is a macro that will
   // generate the query at compile time. VSCode will show the resulting SQL
   // in the IDE where you "run" it.
   inline def samples = quote(query[Samples])

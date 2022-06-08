@@ -5,9 +5,6 @@ import zio.*
 
 import java.sql.SQLException
 import javax.sql.DataSource
-//import io.getquill.context.DatasourceContextInjectionMacro
-
-object PgCtx extends PostgresZioJdbcContext(Literal)
 
 trait DataService:
   def getSample(id: Int): ZIO[DataSource, SQLException, Samples]
@@ -19,7 +16,7 @@ trait DataService:
 // context that will later be injected by ZIO
 final case class DataServiceLive() extends DataService:
   import Queries.*
-  import PgCtx.*
+  import QuillContext.*
 
   def getSample(id: Int): ZIO[DataSource, SQLException, Samples] =
     run(sample(id)).map(_.head) // Need a better way to deal with not found
