@@ -17,12 +17,12 @@ object SampleData:
     )
 
   // Create a bunch of fake data. You could also run a database migration here
-  val dbSetup =
+  val dbSetup = transaction(
     for {
       _ <- run(deleteAllSamples)
       _ <- run(insertSamples(getTestSamps(12)))
     } yield ()
-
+  )
   // The variations on the transaction theme all result in terminiation of the process with no
   // useful error message
   val transactionSetup = transaction(run(deleteAllSamples) *> run(insertSamples(getTestSamps(12))))

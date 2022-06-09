@@ -7,7 +7,7 @@ val zhttpVersion = "2.0.0-RC8"
 val zhttpLogVersion = "2.0.0-RC9"
 val zioVersion = "2.0.0-RC6"
 val zioJsonVersion = "0.3.0-RC8"
-val quillVersion = "3.17.0.Beta3.0-RC4" // Actually protoquill!
+val quillVersion = "4.0.0-RC1" // Actually protoquill!
 val postgresJdbc = "42.3.2"
 
 lazy val root = (project in file("."))
