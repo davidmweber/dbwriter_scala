@@ -13,8 +13,6 @@ trait Api:
 
 case class ApiLive(ds: DataService) extends Api:
 
-  given JsonEncoder[Samples] = DeriveJsonEncoder.gen[Samples]
-
   // Demonstrates using a straight up effect instead of hard coding
   // the function inside the routing app
   def helloEffect(name: String): UIO[Response] =
@@ -35,10 +33,23 @@ case class ApiLive(ds: DataService) extends Api:
         s => Response.json(s.toJson) // Success
       )
 
+  def getSamples =
+    ds.getSamples
+      .fold(
+        f => mapError(f),
+        s => Response.json(s.toJson) // Success
+      )
+
+  def getSample2(id: Int) = ds.getSample(id)
+
+  def addSample(s: NewSample) = ds.addSample(s)
+
   override val app = Http.collectZIO[Request] {
     case Method.GET -> !! / "hello"            => ZIO.succeed(Response.text("Hello World!"))
     case Method.GET -> !! / "hello" / name     => helloEffect(name)
     case Method.GET -> !! / "sample" / int(id) => se(id) //sampleEffect(id.toInt)
+    case Method.GET -> !! / "samples"          => getSamples
+    //case Method.GET -> !! / "sample2" / int(id) => sampleEffect(id) //sampleEffect(id.toInt)
   }
 
 // TODO: This really does not need to be a layer. Separate the routing out from  the API functions

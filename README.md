@@ -17,10 +17,10 @@ instance of PostgreSQL be available. First, set up the database:
 createdb dbwriter_scala
 createuser -P test # Add a password "test" at the prompt 
 ```
-Now use `psql` to create a test table:
+Now use `psql -d dbwriter_scala` to create a test table:
 ```sql
-CREATE TABLE samples (
-    id BIGINT PRIMARY KEY,
+CREATE TABLE sample (
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR NOT NULL, 
     timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     v0 REAL, 

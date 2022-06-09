@@ -7,9 +7,9 @@ import java.sql.SQLException
 import javax.sql.DataSource
 
 trait DataService:
-  def getSample(id: Int): ZIO[DataSource, SQLException, Samples]
-  def getSamples(): ZIO[DataSource, SQLException, List[Samples]]
-  def addSample(s: Samples): ZIO[DataSource, SQLException, Long]
+  def getSample(id: Long): ZIO[DataSource, SQLException, Sample]
+  def getSamples: ZIO[DataSource, SQLException, List[Sample]]
+  def addSample(s: NewSample): ZIO[DataSource, SQLException, Long]
   def delSample(id: Int): ZIO[DataSource, SQLException, Long]
 
 // Map the data service functions over to queries using the
@@ -18,14 +18,14 @@ final case class DataServiceLive() extends DataService:
   import Queries.*
   import QuillContext.*
 
-  def getSample(id: Int): ZIO[DataSource, SQLException, Samples] =
+  def getSample(id: Long): ZIO[DataSource, SQLException, Sample] =
     run(sample(id)).map(_.head) // Need a better way to deal with not found
 
-  def getSamples(): ZIO[DataSource, SQLException, List[Samples]] =
+  def getSamples: ZIO[DataSource, SQLException, List[Sample]] =
     run(samples)
 
-  def addSample(s: Samples): ZIO[DataSource, SQLException, Long] =
-    run(insertSample(s))
+  def addSample(s: NewSample): ZIO[DataSource, SQLException, Long] =
+    run(insertSample(Sample(s)))
 
   def delSample(id: Int): ZIO[DataSource, SQLException, Long] =
     run(deleteSample(id))

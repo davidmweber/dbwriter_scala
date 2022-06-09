@@ -1,7 +1,7 @@
 ThisBuild / scalaVersion := "3.1.2"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "co.za.monadic"
-ThisBuild / organizationName := "example"
+ThisBuild / organizationName := "Monadic Consulting"
 
 val zhttpVersion = "2.0.0-RC8"
 val zhttpLogVersion = "2.0.0-RC9"

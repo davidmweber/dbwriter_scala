@@ -11,7 +11,6 @@ object ZhttpMain extends ZIOAppDefault:
       api <- ZIO.service[Api]
       _ <- SampleData.dbSetup
       _ <- Server.start(8090, api.app)
-      _ <- Console.printLine("Done")
     } yield ())
       .provide(
         Api.live,
