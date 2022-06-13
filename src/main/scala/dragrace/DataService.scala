@@ -8,7 +8,7 @@ import javax.sql.DataSource
 
 trait DataService:
   def getSample(id: Long): ZIO[DataSource, SQLException, Sample]
-  def getSamples: ZIO[DataSource, SQLException, List[Sample]]
+  def getSamples: ZIO[DataSource, SQLException, SampleList]
   def addSample(s: NewSample): ZIO[DataSource, SQLException, Long]
   def delSample(id: Int): ZIO[DataSource, SQLException, Long]
 
@@ -21,8 +21,8 @@ final case class DataServiceLive() extends DataService:
   def getSample(id: Long): ZIO[DataSource, SQLException, Sample] =
     run(sample(id)).map(_.head) // Need a better way to deal with not found
 
-  def getSamples: ZIO[DataSource, SQLException, List[Sample]] =
-    run(samples)
+  def getSamples: ZIO[DataSource, SQLException, SampleList] =
+    run(samples).map(SampleList.apply)
 
   def addSample(s: NewSample): ZIO[DataSource, SQLException, Long] =
     run(insertSample(Sample(s)))

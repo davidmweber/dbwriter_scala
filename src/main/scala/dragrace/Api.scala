@@ -6,50 +6,26 @@ import zio.json.*
 import java.sql.SQLException
 import javax.sql.DataSource
 import scala.annotation.meta.getter
-import ErrorMapper.mapError
+import RestMapper.makeResponse
+import javax.xml.crypto.Data
 
 trait Api:
-  def app: Http[DataSource & DataService, Nothing, Request, Response]
+  def app: Http[DataSource, Nothing, Request, Response]
 
 case class ApiLive(ds: DataService) extends Api:
 
-  // Demonstrates using a straight up effect instead of hard coding
-  // the function inside the routing app
-  def helloEffect(name: String): UIO[Response] =
-    ZIO.succeed(Response.text(s"Hello World $name"))
+  def helloEffect(name: String): UIO[String] = ZIO.succeed(s"Hello World $name")
 
-  def err(e: Throwable) = Http.fail(e)
-
-  def sampleEffect(id: Int) =
-    for {
-      s <- ds.getSample(id.toInt)
-      json = s.toJson
-    } yield Response.json(json)
-
-  def se(id: Int) =
-    ds.getSample(id.toInt)
-      .fold(
-        f => mapError(f),
-        s => Response.json(s.toJson) // Success
-      )
-
-  def getSamples =
-    ds.getSamples
-      .fold(
-        f => mapError(f),
-        s => Response.json(s.toJson) // Success
-      )
-
-  def getSample2(id: Int) = ds.getSample(id)
-
+  def getSamples = ds.getSamples
+  def getSample(id: Int) = ds.getSample(id)
   def addSample(s: NewSample) = ds.addSample(s)
 
   override val app = Http.collectZIO[Request] {
     case Method.GET -> !! / "hello"            => ZIO.succeed(Response.text("Hello World!"))
-    case Method.GET -> !! / "hello" / name     => helloEffect(name)
-    case Method.GET -> !! / "sample" / int(id) => se(id) //sampleEffect(id.toInt)
-    case Method.GET -> !! / "samples"          => getSamples
-    //case Method.GET -> !! / "sample2" / int(id) => sampleEffect(id) //sampleEffect(id.toInt)
+    case Method.GET -> !! / "hello" / name     => helloEffect(name).map(Response.text)
+    case Method.GET -> !! / "sample" / int(id) => makeResponse(getSample(id))
+    case Method.GET -> !! / "samples"          => makeResponse(getSamples)
+    //case Method.POST -> !! / "sample"         => mapRequest[NewSample, NewSampleResponse]()
   }
 
 // TODO: This really does not need to be a layer. Separate the routing out from  the API functions

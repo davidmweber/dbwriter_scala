@@ -15,7 +15,7 @@ object ZhttpMain extends ZIOAppDefault:
       .provide(
         Api.live,
         DataService.live,
-        DataSourceLayer.fromPrefix("database").orDie
+        DataSourceLayer.fromPrefix("database")
       )
       .exitCode
 end ZhttpMain
