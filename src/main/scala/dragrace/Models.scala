@@ -5,13 +5,13 @@ import zio.json.*
 
 trait Model
 
+// Response models only have encoders
 sealed trait ResponseModel extends Model
 
-object ResponseModel
-given JsonEncoder[ResponseModel] = DeriveJsonEncoder.gen[ResponseModel]
-
-sealed trait RequestModel extends Model
-given JsonDecoder[RequestModel] = DeriveJsonDecoder.gen[RequestModel]
+object ResponseModel:
+  implicit val encoder: JsonEncoder[ResponseModel] = DeriveJsonEncoder.gen[ResponseModel]
+  // This is needed because of a bug in Magnolia where it cannot handle nested classes
+  implicit val sEncoder: JsonEncoder[Sample] = DeriveJsonEncoder.gen[Sample]
 
 // The model of the database table
 case class Sample(
@@ -27,16 +27,17 @@ object Sample:
 
 case class SampleList(samples: List[Sample]) extends ResponseModel
 
+case class NewEntityResponse(id: Long) extends ResponseModel
+
+// Request models only have decoders
+sealed trait RequestModel extends Model
+
+object RequestModel:
+  implicit val decoder: JsonDecoder[RequestModel] = DeriveJsonDecoder.gen[RequestModel]
+
 case class NewSample(
     name: String,
     timestamp: LocalDateTime,
     v0: Option[Float],
     v1: Option[Float]
 ) extends RequestModel
-
-// Cannot instantiate an encoder for List[Stample] without an explicit Sample encoder
-given JsonEncoder[Sample] = DeriveJsonEncoder.gen[Sample]
-given JsonDecoder[NewSample] = DeriveJsonDecoder.gen[NewSample]
-
-object Foo:
-  def decode(s: String) = """{}""".fromJson[NewSample]

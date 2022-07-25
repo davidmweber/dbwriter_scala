@@ -3,11 +3,11 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "co.za.monadic"
 ThisBuild / organizationName := "Monadic Consulting"
 
-val zhttpVersion = "2.0.0-RC8"
-val zhttpLogVersion = "2.0.0-RC9"
-val zioVersion = "2.0.0-RC6"
-val zioJsonVersion = "0.3.0-RC8"
-val quillVersion = "4.0.0-RC1" // Actually protoquill!
+val zhttpVersion = "2.0.0-RC10"
+//val zhttpLogVersion = "2.0.0-RC10"
+val zioVersion = "2.0.0"
+val zioJsonVersion = "0.3.0-RC10"
+val quillVersion = "4.1.0-V2" // Actually protoquill!
 val postgresJdbc = "42.3.2"
 
 lazy val root = (project in file("."))
@@ -15,7 +15,7 @@ lazy val root = (project in file("."))
     name := "dbwriter_scala",
     libraryDependencies ++= Seq(
       "io.d11" %% "zhttp" % zhttpVersion,
-      "io.d11" %% "zhttp-logging" % zhttpLogVersion,
+      //"io.d11" %% "zhttp-logging" % zhttpLogVersion,
       "io.getquill" %% "quill-jdbc-zio" % quillVersion,
       "org.postgresql" % "postgresql" % postgresJdbc,
       "dev.zio" %% "zio-json" % zioJsonVersion,

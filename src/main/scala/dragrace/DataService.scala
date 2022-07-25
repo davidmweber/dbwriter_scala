@@ -32,6 +32,5 @@ final case class DataServiceLive() extends DataService:
 
 end DataServiceLive
 
-object DataService: // extends Accessible[DataService]:
+object DataService:
   val live = ZLayer.succeed(DataServiceLive())
-//val live = DataServiceLive.apply.toLayer
