@@ -14,10 +14,10 @@ The build requires only that [sbt](https://www.scala-sbt.org/) be installed and 
 instance of PostgreSQL be available. First, set up the database:
 
 ```sh
-createdb dbwriter_scala
+createdb -U test dbwriter_scala
 createuser -P test # Add a password "test" at the prompt 
 ```
-Now use `psql -d dbwriter_scala` to create a test table:
+Now use `psql -U test -d dbwriter_scala` to create a test table:
 ```sql
 CREATE TABLE sample (
     id BIGSERIAL PRIMARY KEY,
