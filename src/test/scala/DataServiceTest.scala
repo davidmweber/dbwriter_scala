@@ -22,7 +22,7 @@ object DataServiceTest extends ZIOSpecDefault:
       assertTrue(true)
     },
     test("Sample table CRUD") {
-      val s = NewSample("test", java.time.LocalDateTime.now(), Some(0.1f), None)
+      val s = NewSample("test", LocalDateTime.of(2022, 1, 1, 0, 0, 0), Some(0.1f), None)
       for {
         ds <- ZIO.service[DataService]
         i <- ds.addSample(s)
